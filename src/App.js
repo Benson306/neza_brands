@@ -1,5 +1,5 @@
 import React, { lazy } from 'react'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import AccessibleNavigationAnnouncer from './components/AccessibleNavigationAnnouncer'
 
 const Layout = lazy(() => import('./containers/Layout'))
@@ -10,19 +10,20 @@ const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 function App() {
   return (
     <>
-      <Router>
         <AccessibleNavigationAnnouncer />
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/create-account" component={CreateAccount} />
-          <Route path="/forgot-password" component={ForgotPassword} />
+        <Routes>
+          
+          <Route path="/login" Component={Login} />
+          <Route path="/create-account" Component={CreateAccount} />
+          <Route path="/forgot-password" Component={ForgotPassword} />
+          <Route exact path="/*" Component={Login} />
+        </Routes>
+          
 
           {/* Place new routes over this */}
-          <Route path="/app" component={Layout} />
+          {/* <Route path="/app" component={Layout} /> */}
           {/* If you have an index page, you can remothis Redirect */}
-          <Redirect exact from="/" to="/login" />
-        </Switch>
-      </Router>
+          {/* <Redirect exact from="/" to="/login" /> */}
     </>
   )
 }

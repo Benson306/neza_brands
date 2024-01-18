@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, useEffect, lazy } from 'react'
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
+import { Switch, Route, useLocation } from 'react-router-dom'
 import routes from '../routes'
 
 import Sidebar from '../components/Sidebar'
@@ -28,7 +28,6 @@ function Layout() {
         <Header />
         <Main>
           <Suspense fallback={<ThemedSuspense />}>
-            <Switch>
               {routes.map((route, i) => {
                 return route.component ? (
                   <Route
@@ -39,9 +38,8 @@ function Layout() {
                   />
                 ) : null
               })}
-              <Redirect exact from="/app" to="/app/dashboard" />
+              {/* <Redirect exact from="/app" to="/app/dashboard" /> */}
               <Route component={Page404} />
-            </Switch>
           </Suspense>
         </Main>
       </div>

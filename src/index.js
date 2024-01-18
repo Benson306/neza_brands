@@ -6,6 +6,8 @@ import { SidebarProvider } from './context/SidebarContext'
 import ThemedSuspense from './components/ThemedSuspense'
 import { Windmill } from '@windmill/react-ui'
 import * as serviceWorker from './serviceWorker'
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const axe = require('react-axe')
@@ -14,11 +16,15 @@ import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <SidebarProvider>
+    <AuthProvider>
+    <BrowserRouter>
     <Suspense fallback={<ThemedSuspense />}>
       <Windmill usePreferences>
         <App />
       </Windmill>
     </Suspense>
+    </BrowserRouter>
+    </AuthProvider>
   </SidebarProvider>,
   document.getElementById('root')
 )
