@@ -31,7 +31,7 @@ function SidebarContent() {
               <Routes>
               <Route path={route.path} exact={route.exact} />
               </Routes>
-              <Icon className="w-5 h-5 fill-current text-black dark:text-white" aria-hidden="true" icon={route.icon} />
+              <Icon className="w-5 h-5 dark:fill-current text-black dark:text-white" aria-hidden="true" icon={route.icon} />
               <span className="ml-4">{route.name}</span>
             </NavLink>
           </li>
