@@ -15,8 +15,8 @@ import { AuthProvider } from './context/AuthContext'
 // }
 
 ReactDOM.render(
+  <AuthProvider>
   <SidebarProvider>
-    <AuthProvider>
     <BrowserRouter>
     <Suspense fallback={<ThemedSuspense />}>
       <Windmill usePreferences>
@@ -24,8 +24,8 @@ ReactDOM.render(
       </Windmill>
     </Suspense>
     </BrowserRouter>
-    </AuthProvider>
-  </SidebarProvider>,
+  </SidebarProvider>
+  </AuthProvider>,
   document.getElementById('root')
 )
 
