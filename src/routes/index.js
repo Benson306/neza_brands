@@ -4,6 +4,8 @@ import { lazy } from 'react'
 const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Payouts = lazy(()=> import('../pages/Payouts'))
 const Settings = lazy(()=> import('../pages/Settings'))
+const SimpleForm = lazy(()=> import('../pages/SimpleForm'))
+const FileUpload = lazy(()=> import('../pages/FileUpload'))
 const Forms = lazy(() => import('../pages/Forms'))
 const Cards = lazy(() => import('../pages/Cards'))
 const Charts = lazy(() => import('../pages/Charts'))
@@ -35,6 +37,14 @@ const routes = [
   {
     path: '/settings',
     component: Settings
+  },
+  {
+    path: '/simple_form',
+    component: SimpleForm
+  },
+  {
+    path: '/file_upload',
+    component: FileUpload
   },
   {
     path: '/forms',
