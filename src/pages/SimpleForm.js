@@ -3,8 +3,10 @@ import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } fr
 import PageTitle from '../components/Typography/PageTitle'
 import SectionTitle from '../components/Typography/SectionTitle'
 import { OutlinePersonIcon, PeopleIcon, MailIcon, FormsIcon, MoneyIcon, CountryIcon } from '../icons'
+import { useNavigate } from 'react-router-dom'
 
 function SimpleForm() {
+  const navigate = useNavigate();
   return (
     <div>
       <div className='text-center'>
@@ -117,7 +119,11 @@ function SimpleForm() {
         </Card>
 
         <div className='flex justify-center mt-4 mb-1'>
-            <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full">CREATE PAYOUT</Button>
+            <Button onClick={
+              ()=>{
+                navigate('/app/summary_payment');
+              }
+            } class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full">CREATE PAYOUT</Button>
         </div>
 
       </div>
