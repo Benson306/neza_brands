@@ -70,7 +70,7 @@ function Payouts() {
           
           <div className="block w-full sm:hidden mb-4">
           <p className='text-xs text-center mb-1 text-gray-500'>For a single payout use this option</p>
-            <Button block size="large" class="w-full border border-gray-500 p-2 rounded-lg text-sm" layout="outline" 
+            <Button block size="large" class="w-full border border-gray-500 p-2 rounded-lg text-sm dark:text-white" layout="outline" 
             onClick={() => {
                 closeModal();
                 navigate('/app/simple_form')
@@ -81,7 +81,7 @@ function Payouts() {
           </div>
           <div className="block w-full sm:hidden mt-2">
             <p className='text-xs text-center mb-1 text-gray-500'>For multiple payouts use this option</p>
-            <Button size="large" class="w-full bg-blue-600 border border-gray-300 p-2 rounded-lg text-sm text-white"
+            <Button size="large" class="w-full bg-blue-600 border border-blue-600 p-2 rounded-lg text-sm text-white"
             onClick={() => {
                 closeModal();
                 navigate('/app/file_upload')
