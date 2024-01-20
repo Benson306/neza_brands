@@ -110,7 +110,7 @@ function SimpleForm() {
             <div className='flex justify-between'>
             <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">TOTAL KES</p>
             <p className="text-gray-600 dark:text-gray-400">
-              450
+              450 Ksh
             </p>
             </div>
           </CardBody>
