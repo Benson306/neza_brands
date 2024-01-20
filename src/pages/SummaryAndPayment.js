@@ -19,22 +19,50 @@ function SummaryAndPayment() {
     const [dataTable, setDateTable] = useState([])
   return (
     <div>
-        <div className='text-center'>
-            <PageTitle>Summary and Payment</PageTitle>
-
-            <SectionTitle>Simple table</SectionTitle>
+        <div className='text-center mt-3'>
+            <SectionTitle>Summary</SectionTitle>
         </div>
     
-    <div className='w-full lg:w-3/4 mx-auto'>
+    <div className='w-full lg:w-2/3 mx-auto'>
       <TableContainer className="mb-8">
         <Table>
           <TableHeader>
-            <tr>
+            <tr className='flex justify-between'>
               <TableCell>Name</TableCell>
               <TableCell>Amount</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
+            <TableRow>
+                <tr className='flex justify-between'>
+                    <TableCell>
+                        <p>bnkimtai@gmail.com</p>
+                    </TableCell>
+                    <TableCell>
+                        <p>Ksh. 4500</p>
+                    </TableCell>
+                </tr>
+            </TableRow>
+            <TableRow>
+                <tr className='flex justify-between'>
+                    <TableCell>
+                        <p>bnkimtai@gmail.com</p>
+                    </TableCell>
+                    <TableCell>
+                        <p>Ksh. 4500</p>
+                    </TableCell>
+                </tr>
+            </TableRow>
+            <TableRow>
+                <tr className='flex justify-between'>
+                    <TableCell>
+                        <p>bnkimtai@gmail.com</p>
+                    </TableCell>
+                    <TableCell>
+                        <p>Ksh. 4500</p>
+                    </TableCell>
+                </tr>
+            </TableRow>
             { dataTable.length > 0 && dataTable.map((user, i) => (
               <TableRow key={i}>
                 <TableCell>
