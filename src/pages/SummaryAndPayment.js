@@ -63,6 +63,9 @@ function SummaryAndPayment() {
                     </TableCell>
                 </tr>
             </TableRow>
+            <hr />
+            <hr />
+            <hr />
             <TableRow>
                 <tr className='flex justify-between'>
                     <TableCell>
