@@ -63,6 +63,16 @@ function SummaryAndPayment() {
                     </TableCell>
                 </tr>
             </TableRow>
+            <TableRow>
+                <tr className='flex justify-between'>
+                    <TableCell>
+                    <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">TOTAL KES</p>
+                    </TableCell>
+                    <TableCell>
+                        <p>9000</p>
+                    </TableCell>
+                </tr>
+            </TableRow>
             { dataTable.length > 0 && dataTable.map((user, i) => (
               <TableRow key={i}>
                 <TableCell>
