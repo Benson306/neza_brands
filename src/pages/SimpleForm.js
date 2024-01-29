@@ -1,14 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } from '@windmill/react-ui'
 import PageTitle from '../components/Typography/PageTitle'
 import SectionTitle from '../components/Typography/SectionTitle'
 import { OutlinePersonIcon, PeopleIcon, MailIcon, FormsIcon, MoneyIcon, CountryIcon } from '../icons'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SimpleForm() {
   const navigate = useNavigate();
+
+  const [recepientName, setReceiptName] = useState(null);
+  const [country, setCountry] = useState("kenya");
+  const [email, setEmail] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [amount, setAmount] = useState(null);
+  const [currency, setCurrency] = useState("ksh");
+
+  const handleSubmit = () =>{
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailRegex.test(email)){
+      toast.error('Invalid Email', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+        return;
+    }
+
+    let data = {recepientName, country, description, email, amount, currency}
+
+    const newData = [];
+    newData.push(data);
+
+    navigate('/app/summary_payment', { state: newData});
+  }
+
   return (
     <div>
+      <ToastContainer />
       <div className='text-center'>
         <PageTitle>Create Single Payout</PageTitle>
       </div>
@@ -22,6 +58,7 @@ function SimpleForm() {
               <input
                 className="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
                 placeholder="Jane Doe"
+                onChange={e => setReceiptName(e.target.value)}
               />
               <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                 <OutlinePersonIcon className="w-5 h-5" aria-hidden="true" />
@@ -36,12 +73,12 @@ function SimpleForm() {
               
               <Select 
                 className="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
-
+                onChange={e => setCountry(e.target.value)}
               >
-              <option>Kenya</option>
-              <option>Uganda</option>
-              <option>Tanzania</option>
-              <option>Nigeria</option>
+              <option value="kenya">Kenya</option>
+              <option value="uganda">Uganda</option>
+              <option value="tanzania">Tanzania</option>
+              <option value="nigeria">Nigeria</option>
             </Select>
               <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                 <CountryIcon className="w-5 h-5" aria-hidden="true" />
@@ -54,9 +91,10 @@ function SimpleForm() {
             {/* <!-- focus-within sets the color for the icon when input is focused --> */}
             <div className="relative text-gray-500 focus-within:text-blue-600 dark:focus-within:text-blue-400">
               <input
-                type='text'
+                type='email'
                 className="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
                 placeholder="janedoe@gmail.com"
+                onChange={e => setEmail(e.target.value)}
               />
               <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                 <MailIcon className="w-5 h-5" aria-hidden="true" />
@@ -72,6 +110,7 @@ function SimpleForm() {
                 type='text'
                 className="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
                 placeholder="Payment for ..."
+                onChange={e => setDescription(e.target.value)}
               />
               <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                 <FormsIcon className="w-5 h-5" aria-hidden="true" />
@@ -88,6 +127,7 @@ function SimpleForm() {
                   type='number'
                   className="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
                   placeholder="200"
+                  onChange={e => setAmount(e.target.value)}
                 />
                 <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                   <MoneyIcon className="w-5 h-5" aria-hidden="true" />
@@ -97,31 +137,20 @@ function SimpleForm() {
 
           <Label className="mt-4">
             <span>Currency</span>
-            <Select className="mt-1">
-              <option>Ksh</option>
-              <option>Ush</option>
-              <option>Tsh</option>
-              <option>Naira</option>
+            <Select onChange={e => setCurrency(e.target.value)} className="mt-1">
+              <option value="ksh">Ksh</option>
+              <option value="ush">Ush</option>
+              <option value="tsh">Tsh</option>
+              <option value="naira">Naira</option>
             </Select>
           </Label>
 
         </div>
 
-        <Card className="mt-4">
-          <CardBody>
-            <div className='flex justify-between'>
-            <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">TOTAL KES</p>
-            <p className="text-gray-600 dark:text-gray-400">
-              450 Ksh
-            </p>
-            </div>
-          </CardBody>
-        </Card>
-
         <div className='flex justify-center mt-4 mb-1'>
             <Button onClick={
               ()=>{
-                navigate('/app/summary_payment');
+                handleSubmit();
               }
             } class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full">CREATE PAYOUT</Button>
         </div>
