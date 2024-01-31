@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } from '@windmill/react-ui'
 import PageTitle from '../components/Typography/PageTitle'
 import SectionTitle from '../components/Typography/SectionTitle'
@@ -42,6 +42,18 @@ function SimpleForm() {
     navigate('/app/summary_payment', { state: newData});
   }
 
+  useEffect(()=>{
+    if(country == "kenya"){
+      setCurrency("ksh");
+    }else if(country == "uganda"){
+      setCurrency("ush");
+    }else if(country == "sa"){
+      setCurrency("rand");
+    }else if(country == "nigeria"){
+      setCurrency("naira")
+    }
+  }, [country])
+
   return (
     <div>
       <ToastContainer />
@@ -77,7 +89,7 @@ function SimpleForm() {
               >
               <option value="kenya">Kenya</option>
               <option value="uganda">Uganda</option>
-              <option value="tanzania">Tanzania</option>
+              <option value="sa">South Africa</option>
               <option value="nigeria">Nigeria</option>
             </Select>
               <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
@@ -125,24 +137,15 @@ function SimpleForm() {
               <div className="relative text-gray-500 focus-within:text-blue-600 dark:focus-within:text-blue-400">
                 <input
                   type='number'
-                  className="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
+                  className="block w-full pl-16 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray form-input"
                   placeholder="200"
                   onChange={e => setAmount(e.target.value)}
                 />
                 <div className="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
-                  <MoneyIcon className="w-5 h-5" aria-hidden="true" />
+                  {/* <MoneyIcon className="w-5 h-5" aria-hidden="true" /> */}
+                  <span className='capitalize font-semibold'>{currency}</span>
                 </div>
               </div>
-          </Label>
-
-          <Label className="mt-4">
-            <span>Currency</span>
-            <Select onChange={e => setCurrency(e.target.value)} className="mt-1">
-              <option value="ksh">Ksh</option>
-              <option value="ush">Ush</option>
-              <option value="tsh">Tsh</option>
-              <option value="naira">Naira</option>
-            </Select>
           </Label>
 
         </div>

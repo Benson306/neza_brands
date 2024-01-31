@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
 import CTA from '../components/CTA'
 import InfoCard from '../components/Cards/InfoCard'
@@ -28,10 +28,13 @@ import {
   doughnutLegends,
   lineLegends,
 } from '../utils/demo/chartsData'
+import { AuthContext } from '../context/AuthContext'
 
 function Dashboard() {
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
+  const [payouts, setPayouts] = useState([]);
+  const [totalPayouts, setTotalPayouts] = useState(0);
 
   // pagination setup
   const resultsPerPage = 10
@@ -42,11 +45,49 @@ function Dashboard() {
     setPage(p)
   }
 
+  const { uid } = useContext(AuthContext);
+
+  const [creditBalance, setCreditBalance] = useState(0);
+  const [walletBalance, setWalletBalance] = useState(0);
+  const [ currency, setCurrency ] = useState("ksh");
+
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
-    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage))
-  }, [page])
+    fetch(`${process.env.REACT_APP_API_URL}/balance/${uid}`)
+    .then(response =>  response.json())
+    .then(response => {
+      setCreditBalance(response.credit_balance);
+      setWalletBalance(response.wallet_balance);
+
+      if(response.country == "kenya"){
+        setCurrency("ksh");
+      }else if(response.country == "uganda"){
+        setCurrency("ush");
+      }else if(response.country == "sa"){
+        setCurrency("rand");
+      }else if(response.country == "nigeria"){
+        setCurrency("naira")
+      }
+    })
+    .catch(err => console.log(err))
+
+    fetch(`${process.env.REACT_APP_API_URL}/payouts/${uid}`)
+    .then( response => response.json())
+    .then(response => {
+      setPayouts(response);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
+    //setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage))
+  }, [])
+
+  useEffect(()=>{
+    const calculatedTotal = payouts.reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotalPayouts(calculatedTotal)
+  }, [payouts])
 
   return (
     <>
@@ -56,7 +97,7 @@ function Dashboard() {
 
       {/* <!-- Cards --> */}
       <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-        <InfoCard title="Total Payouts" value="6389">
+        <InfoCard title="Total Payouts" value={`${currency} ${totalPayouts}`}>
           <RoundIcon
             icon={PeopleIcon}
             iconColorClass="text-orange-500 dark:text-orange-100"
@@ -65,7 +106,7 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="Account balance" value="$ 46,760.89">
+        <InfoCard title="Wallet balance" value={`${currency}. ${walletBalance}`}>
           <RoundIcon
             icon={MoneyIcon}
             iconColorClass="text-green-500 dark:text-green-100"
@@ -74,7 +115,7 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="New sales" value="376">
+        <InfoCard title="Credit Balance" value={`${currency} ${creditBalance}`}>
           <RoundIcon
             icon={CartIcon}
             iconColorClass="text-blue-600 dark:text-blue-100"
@@ -83,7 +124,7 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="Pending contacts" value="35">
+        <InfoCard title="Total Brands" value="35">
           <RoundIcon
             icon={ChatIcon}
             iconColorClass="text-teal-500 dark:text-teal-100"
