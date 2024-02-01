@@ -96,7 +96,7 @@ function Dashboard() {
       {/* <CTA /> */}
 
       {/* <!-- Cards --> */}
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
         <InfoCard title="Total Payouts" value={`${currency} ${totalPayouts}`}>
           <RoundIcon
             icon={PeopleIcon}
@@ -124,14 +124,14 @@ function Dashboard() {
           />
         </InfoCard>
 
-        <InfoCard title="Total Brands" value="35">
+        {/* <InfoCard title="Total Brands" value="35">
           <RoundIcon
             icon={ChatIcon}
             iconColorClass="text-teal-500 dark:text-teal-100"
             bgColorClass="bg-teal-100 dark:bg-teal-500"
             className="mr-4"
           />
-        </InfoCard>
+        </InfoCard> */}
       </div>
 
       {/* <TableContainer>

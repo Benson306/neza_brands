@@ -38,7 +38,7 @@ function PayoutsTable() {
 
   return (
     <div className='w-full mx-auto'>
-      { !loading && <div className='capitalize flex my-3 mr-20'>
+      { !loading && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
         Total Payout: <span className='font-semibold ml-2'>{data[0].currency}. {total}</span>
       </div> }
       <TableContainer className="mb-8">
@@ -55,7 +55,7 @@ function PayoutsTable() {
           </TableHeader>
           <TableBody>
             {
-              !loading && !error && data.map( (item, i) => (
+              !loading && !error && data.reverse().map( (item, i) => (
               <TableRow key={i}>
                 <TableCell>
                       <p className="font-semibold">{item.recepient_name}</p>
