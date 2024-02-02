@@ -8,6 +8,7 @@ import {
   TableRow,
   TableFooter,
   TableContainer,
+  Pagination
 } from '@windmill/react-ui'
 
 function PayoutsTable() {
@@ -36,10 +37,34 @@ function PayoutsTable() {
     setTotal(calculatedTotal)
   },[data])
 
+  // setup pages control for every table
+  const [pageTable1, setPageTable1] = useState(1)
+
+  // setup data for every table
+  const [dataTable1, setDataTable1] = useState([])
+
+  // pagination setup
+  const resultsPerPage = 5
+  const totalResults = data.length;
+
+  // pagination change control
+  function onPageChangeTable1(p) {
+    setPageTable1(p)
+  }
+
+  // on page change, load new sliced data
+  // here you would make another server request for new data
+  useEffect(() => {
+    setDataTable1(data.slice((pageTable1 - 1) * resultsPerPage, pageTable1 * resultsPerPage))
+  }, [pageTable1, data])
+
   return (
     <div className='w-full mx-auto'>
-      { !loading && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
+      { !loading && data.length > 0 && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
         Total Payout: <span className='font-semibold ml-2'>{data[0].currency}. {total}</span>
+      </div> }
+      { !loading && data.length < 1 && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
+        You Have No Payouts
       </div> }
       <TableContainer className="mb-8">
         <Table>
@@ -55,7 +80,7 @@ function PayoutsTable() {
           </TableHeader>
           <TableBody>
             {
-              !loading && !error && data.reverse().map( (item, i) => (
+              !loading && !error && dataTable1.slice().reverse().map( (item, i) => (
               <TableRow key={i}>
                 <TableCell>
                       <p className="font-semibold">{item.recepient_name}</p>
@@ -87,6 +112,14 @@ function PayoutsTable() {
             }
           </TableBody>
         </Table>
+        <TableFooter>
+          <Pagination
+            totalResults={totalResults}
+            resultsPerPage={resultsPerPage}
+            onChange={onPageChangeTable1}
+            label="Table navigation"
+          />
+        </TableFooter>
       </TableContainer>
 
     
