@@ -1,23 +1,20 @@
 import React, { lazy, useContext, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import AccessibleNavigationAnnouncer from './components/AccessibleNavigationAnnouncer'
+import Sidebar from './components/Sidebar';
+import routes from './routes';
 import { AuthContext } from './context/AuthContext'
 import { SidebarContext } from './context/SidebarContext';
-import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Main from './containers/Main';
-import routes from './routes';
 
-const Layout = lazy(() => import('./containers/Layout'))
 const Login = lazy(() => import('./pages/Login'))
-const CreateAccount = lazy(() => import('./pages/CreateAccount'))
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 const ChangePassword = lazy(()=> import('./pages/ChangePassword'))
 const Dashboard = lazy(()=> import('./pages/Dashboard'))
 
 function App() {
   const { uid } = useContext(AuthContext);
-  console.log(uid);
 
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext)
   let location = useLocation()
