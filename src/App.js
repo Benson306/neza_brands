@@ -34,48 +34,32 @@ function App() {
             <Route exact path="/*" Component={Login} />
         </Routes> 
         :
+
       <div>
-
         <Routes>
-            <Route path="/change_password" Component={ChangePassword} />
+          <Route path="/change_password" element={<ChangePassword />} />
+
+          {routes.map(route => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={(
+                  <div className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${isSidebarOpen && 'overflow-hidden'}`}>
+                    <Sidebar />
+                    <div className="flex flex-col flex-1 w-full">
+                      <Header />
+                      <Main>
+                        <route.component />
+                      </Main>
+                    </div>
+                  </div>
+                )}
+              />
+            ))}
         </Routes>
-
-        <div
-          className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${isSidebarOpen && 'overflow-hidden'}`}
-        >
-            <Sidebar />
-
-            <div className="flex flex-col flex-1 w-full">
-              <Header />
-              <Main>
-                <Routes>
-                <Route path="/" Component={Dashboard} />
-                  {
-                    routes.map( route => 
-                      <Route path={`/app${route.path}`} Component={route.component} />
-                    )
-                  }
-                </Routes>
-              </Main>
-            </div>
-        </div>
       </div>
         
     }
-      {/* <Router>
-        <AccessibleNavigationAnnouncer />
-        <Switch>
-          <Route path="/login" Component={Login} />
-          <Route path="/create-account" Component={CreateAccount} />
-          <Route path="/forgot-password" Component={ForgotPassword} />
-          <Route path="/change_password" Component={ChangePassword} /> */}
-
-          {/* Place new routes over this */}
-          {/* <Route path="/app" Component={Layout} /> */}
-          {/* If you have an index page, you can remothis Redirect */}
-          {/* <Redirect exact from="/" to="/login" />
-        </Switch>
-      </Router> */}
   </div>
   )
 }

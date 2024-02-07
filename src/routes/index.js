@@ -28,59 +28,59 @@ const Blank = lazy(() => import('../pages/Blank'))
  */
 const routes = [
   {
-    path: '/dashboard', // the url
+    path: '/app/dashboard', // the url
     component: Dashboard, // view rendered
   },
   {
-    path: '/payouts',
+    path: '/app/payouts',
     component: Payouts
   },
   {
-    path: '/settings',
+    path: '/app/settings',
     component: Settings
   },
   {
-    path: '/simple_form',
+    path: '/app/simple_form',
     component: SimpleForm
   },
   {
-    path: '/file_upload',
+    path: '/app/file_upload',
     component: FileUpload
   },
   {
-    path: '/summary_payment',
+    path: '/app/summary_payment',
     component: SummaryAndPayment
   },
   {
-    path: '/forms',
+    path: '/app/forms',
     component: Forms,
   },
   {
-    path: '/cards',
+    path: '/app/cards',
     component: Cards,
   },
   {
-    path: '/charts',
+    path: '/app/charts',
     component: Charts,
   },
   {
-    path: '/buttons',
+    path: '/app/buttons',
     component: Buttons,
   },
   {
-    path: '/modals',
+    path: '/app/modals',
     component: Modals,
   },
   {
-    path: '/tables',
+    path: '/app/tables',
     component: Tables,
   },
   {
-    path: '/404',
+    path: '/app/404',
     component: Page404,
   },
   {
-    path: '/blank',
+    path: '/app/blank',
     component: Blank,
   },
 ]
