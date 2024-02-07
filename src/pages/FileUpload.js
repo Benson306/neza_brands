@@ -51,7 +51,7 @@ function FileUpload() {
 
           <div className='flex justify-between text-blue-800 dark:text-blue-500 font-extrabold mt-3'>
             <span>Choose File</span>
-            <a href="" className='hover:text-blue-600 hover:underline'>Download template</a>
+            <a href={require("../assets/excel/PAYMENT_EXCEL_TEMPLATE.xlsx")} download className='hover:text-blue-600 hover:underline'>Download template</a>
           </div>
 
         <div className="flex items-center justify-center w-full mt-2" onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}>
@@ -59,7 +59,7 @@ function FileUpload() {
             <div className="flex gap-4 lg:gap-10 mt-5">
                 <div className=''>
                     <img src={require('../icons/excel.png')} alt="Excel Logo" className="w-32 h-32 mr-2" />
-                    <div className="text-sm mr-2 text-center mt-5">{selectedFile.name}</div>
+                    <div className="text-xs mr-2 text-center mt-5 overflow-hidden">{selectedFile.name}</div>
                 </div>
               
               <button type="button" onClick={handleDeleteFile}  className="w-8 h-8 fill-current bg-red-500 text-white cursor-pointer rounded-full">
@@ -80,7 +80,7 @@ function FileUpload() {
           )}
         </div>
 
-        <p className="text-gray-600 dark:text-gray-400 mt-4">We support excel (.xlsx) and (.xls) file format. The file must have a field containing the recepient's Name, country, recepient's email, description , amount and the currency. You can download a template <a href="#" className='text-blue-800 hover:text-blue-500 dark:text-blue-500 font-bold hover:underline'>here</a>.</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-4">We support excel (.xlsx) and (.xls) file format. The file must have fields with title recepient_name, recepient_email, country, description and amount . You can download a template <a href={require("../assets/excel/PAYMENT_EXCEL_TEMPLATE.xlsx")} download className='text-blue-800 hover:text-blue-500 dark:text-blue-500 font-bold hover:underline'>here</a>.</p>
       </div>
     </div>
   )
