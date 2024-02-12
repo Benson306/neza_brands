@@ -69,26 +69,54 @@ function SummaryAndPayment() {
         return;
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}/make_single_payout`,{
-      method: 'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify({
-        sender_id : uid,
-        sender_email : email,
-        recepient_name : data[0].recepientName,
-        recepient_email : data[0].email,
-        amount : data[0].amount,
-        country : data[0].country,
-        description: data[0].description,
-        currency: data[0].currency,
-        source : "wallet",
+    if(data.length < 2){
+      fetch(`${process.env.REACT_APP_API_URL}/make_single_payout`,{
+        method: 'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+          sender_id : uid,
+          sender_email : email,
+          recepient_name : data[0].recepientName,
+          recepient_email : data[0].email,
+          amount : data[0].amount,
+          country : data[0].country,
+          description: data[0].description,
+          currency: data[0].currency,
+          source : "wallet",
+        })
       })
-    })
-    .then(response => {
-      if(response.ok){
-        toast.success('Success', {
+      .then(response => {
+        if(response.ok){
+          toast.success('Success', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            setTimeout(()=>{
+              navigate("/app/payouts");
+            }, 700)
+        }else{
+          toast.error('Failed. Server Error', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        }
+      })
+      .catch(err => {
+        toast.error('Server Error', {
           position: "top-right",
           autoClose: 1000,
           hideProgressBar: false,
@@ -98,11 +126,50 @@ function SummaryAndPayment() {
           progress: undefined,
           theme: "colored",
           });
-          setTimeout(()=>{
-            navigate("/app/payouts");
-          }, 700)
-      }else{
-        toast.error('Failed. Server Error', {
+      })
+    }else if(data.length > 1){
+      fetch(`${process.env.REACT_APP_API_URL}/make_multiple_payout`,{
+        method: 'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+          sender_id : uid,
+          sender_email : email,
+          data: data,
+          source : "wallet",
+        })
+      })
+      .then(response => {
+        if(response.ok){
+          toast.success('Success', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            setTimeout(()=>{
+              navigate("/app/payouts");
+            }, 700)
+        }else{
+          toast.error('Failed. Server Error', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        }
+      })
+      .catch(err => {
+        toast.error('Server Error', {
           position: "top-right",
           autoClose: 1000,
           hideProgressBar: false,
@@ -112,24 +179,13 @@ function SummaryAndPayment() {
           progress: undefined,
           theme: "colored",
           });
-      }
-    })
-    .catch(err => {
-      toast.error('Server Error', {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
-    })
+      })
+    }
+    
   }
 
   const handlePayByCredit = () => {
-    if(walletBalance < total){
+    if(creditBalance < total){
       toast.error('Insufficient Credit Balance', {
         position: "top-right",
         autoClose: 1000,
@@ -143,40 +199,54 @@ function SummaryAndPayment() {
         return;
     }
 
-    fetch(`${process.env.REACT_APP_API_URL}/make_single_payout`,{
-      method: 'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify({
-        sender_id : uid,
-        sender_email : email,
-        recepient_name : data[0].recepientName,
-        recepient_email : data[0].email,
-        amount : data[0].amount,
-        country : data[0].country,
-        description: data[0].description,
-        currency: data[0].currency,
-        source : "credit",
+    if(data.length < 2){
+      fetch(`${process.env.REACT_APP_API_URL}/make_single_payout`,{
+        method: 'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+          sender_id : uid,
+          sender_email : email,
+          recepient_name : data[0].recepientName,
+          recepient_email : data[0].email,
+          amount : data[0].amount,
+          country : data[0].country,
+          description: data[0].description,
+          currency: data[0].currency,
+          source : "credit",
+        })
       })
-    })
-    .then(response => {
-      if(response.ok){
-        toast.success('Success', {
-          position: "top-right",
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
-          setTimeout(()=>{
-            navigate("/app/payouts");
-          }, 700)
-      }else{
-        toast.error('Failed. Server Error', {
+      .then(response => {
+        if(response.ok){
+          toast.success('Success', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            setTimeout(()=>{
+              navigate("/app/payouts");
+            }, 700)
+        }else{
+          toast.error('Failed. Server Error', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        }
+      })
+      .catch(err => {
+        toast.error('Server Error', {
           position: "top-right",
           autoClose: 1000,
           hideProgressBar: false,
@@ -186,20 +256,61 @@ function SummaryAndPayment() {
           progress: undefined,
           theme: "colored",
           });
-      }
-    })
-    .catch(err => {
-      toast.error('Server Error', {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
-    })
+      })
+    }else if(data.length > 1){
+      fetch(`${process.env.REACT_APP_API_URL}/make_multiple_payout`,{
+        method: 'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+          sender_id : uid,
+          sender_email : email,
+          data: data,
+          source : "credit",
+        })
+      })
+      .then(response => {
+        if(response.ok){
+          toast.success('Success', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            setTimeout(()=>{
+              navigate("/app/payouts");
+            }, 700)
+        }else{
+          toast.error('Failed. Server Error', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        }
+      })
+      .catch(err => {
+        toast.error('Server Error', {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      })
+    }
   }
 
   const handleCombineBothPaymentMethods = () =>{

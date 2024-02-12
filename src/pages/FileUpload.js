@@ -5,6 +5,8 @@ import SectionTitle from '../components/Typography/SectionTitle'
 import { OutlinePersonIcon, PeopleIcon, MailIcon, FormsIcon, MoneyIcon, CountryIcon } from '../icons'
 import { useNavigate } from 'react-router-dom'
 import * as XLSX from 'xlsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function FileUpload() {
 
@@ -90,8 +92,23 @@ function FileUpload() {
   
       // Save the validated data
       setData(validatedData);
+
+      if(validatedData.length > 0){
+        navigate('/app/summary_payment', { state: validatedData});
+      }else{
+        toast.error('Excel sheet is empty', {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
   
-      navigate('/app/summary_payment', { state: validatedData});
+      
     };
   
     reader.readAsArrayBuffer(selectedFile);
@@ -99,6 +116,7 @@ function FileUpload() {
 
   return (
     <div>
+      <ToastContainer />
       <div className='text-center'>
         <PageTitle>Make Multiple Payouts</PageTitle>
       </div>
