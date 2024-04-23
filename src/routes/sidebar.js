@@ -12,6 +12,11 @@ const routes = [
     name: 'Dashboard', // name that appear in Sidebar
   },
   {
+    path: '/app/add_funds',
+    icon: 'WalletIcon',
+    name: 'Deposits'
+  },
+  {
     path: '/app/payouts',
     icon: 'WalletIcon',
     name: 'Payouts'

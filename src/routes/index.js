@@ -7,6 +7,7 @@ const Settings = lazy(()=> import('../pages/Settings'))
 const SimpleForm = lazy(()=> import('../pages/SimpleForm'))
 const FileUpload = lazy(()=> import('../pages/FileUpload'))
 const SummaryAndPayment = lazy(()=> import('../pages/SummaryAndPayment'))
+const Deposit = lazy(()=> import('../pages/Deposit'))
 const Forms = lazy(() => import('../pages/Forms'))
 const Cards = lazy(() => import('../pages/Cards'))
 const Charts = lazy(() => import('../pages/Charts'))
@@ -54,6 +55,10 @@ const routes = [
   {
     path: '/app/summary_payment',
     component: SummaryAndPayment
+  },
+  {
+    path: '/app/add_funds',
+    component: Deposit,
   },
   {
     path: '/app/forms',

@@ -1,17 +1,6 @@
 import React, { useState } from 'react'
 import {
-    TableBody,
-    TableContainer,
-    Table,
-    TableHeader,
-    TableCell,
-    TableRow,
-    TableFooter,
-    Avatar,
-    Badge,
-    Pagination,
     Modal, ModalHeader, ModalBody, ModalFooter, Button
-
 } from '@windmill/react-ui'
 import PageTitle from '../components/Typography/PageTitle'
 import PayoutsTable from './PayoutsTable'
