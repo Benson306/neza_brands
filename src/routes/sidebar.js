@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: '/app/add_funds',
-    icon: 'WalletIcon',
+    icon: 'MoneyIcon',
     name: 'Deposits'
   },
   {

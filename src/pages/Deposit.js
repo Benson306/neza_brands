@@ -137,7 +137,7 @@ function Deposit() {
   const [dataTable1, setDataTable1] = useState([])
 
   // pagination setup
-  const resultsPerPage = 5
+  const resultsPerPage = 10;
   const totalResults = data.length;
 
   // pagination change control
@@ -148,7 +148,7 @@ function Deposit() {
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
-    setDataTable1(data.slice((pageTable1 - 1) * resultsPerPage, pageTable1 * resultsPerPage))
+    setDataTable1(data.slice((pageTable1 - 1) * resultsPerPage, pageTable1 * resultsPerPage).reverse())
   }, [pageTable1, data])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -189,16 +189,23 @@ function Deposit() {
           </TableHeader>
           <TableBody>
             {
-              !loading && !error && dataTable1.slice().reverse().map( (item, i) => (
+              !loading && !error && dataTable1.slice().map( (item, i) => (
               <TableRow key={i}>
                 <TableCell>
                   <span className="text-sm capitalize">{item.currency} {item.amount}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">{item.status}</span>
+                  {
+                    item.status == "charge.success" ? <span className="text-sm bg-green-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
+                    :
+                    item.status == "charge.cancelled" ? <span className="text-sm bg-red-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
+                    :
+                    <span className="text-sm bg-gray-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
+                  }
+                  
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm"><b>{item.time}</b> {item.date}</span>
+                  <span className="text-sm"><b>{item.time} UTC</b> <br/> {item.date}</span>
                 </TableCell>
               </TableRow>
               ) )
