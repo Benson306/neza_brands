@@ -1,48 +1,43 @@
-import React, { useState } from 'react'
-import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } from '@windmill/react-ui'
-import PageTitle from '../components/Typography/PageTitle'
-import SectionTitle from '../components/Typography/SectionTitle'
-import { OutlinePersonIcon, PeopleIcon, MailIcon, FormsIcon, MoneyIcon, CountryIcon } from '../icons'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } from '@windmill/react-ui';
+import PageTitle from '../components/Typography/PageTitle';
+import SectionTitle from '../components/Typography/SectionTitle';
+import { OutlinePersonIcon, PeopleIcon, MailIcon, FormsIcon, MoneyIcon, CountryIcon } from '../icons';
+import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function FileUpload() {
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [data, setData] = useState([]);
   const [viewProcessBtn, setViewProcessBtn] = useState(false);
 
   const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      // Check if the file is an Excel file (xlsx or xls)
-      if (file && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel')) {
-      setSelectedFile(file);
-      setViewProcessBtn(true);
-      } else {
-      setSelectedFile(null);
-      alert('Please upload a valid Excel file (XLSX or XLS)');
-      }
+    const file = e.target.files[0];
+    validateFile(file);
   };
 
   const handleFileDrop = (e) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel')) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    validateFile(file);
+  };
+
+  const validateFile = (file) => {
+    if (file && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel')) {
       setSelectedFile(file);
       setViewProcessBtn(true);
-      } else {
+    } else {
       setSelectedFile(null);
       alert('Please upload a valid Excel file (XLSX or XLS)');
-      }
+    }
   };
 
   const handleDeleteFile = () => {
-      setSelectedFile(null);
-      setViewProcessBtn(false);
+    setSelectedFile(null);
+    setViewProcessBtn(false);
   };
-
 
   const navigate = useNavigate();
 
@@ -51,67 +46,73 @@ function FileUpload() {
       alert('Please upload a file first.');
       return;
     }
-  
+
     const reader = new FileReader();
     reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-  
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-  
-      // Check if the Excel file has the correct headers
-      const expectedHeaders = ['recepientName', 'email', 'country', 'description', 'currency', 'amount'];
-      const actualHeaders = rows[0];
-      if (!expectedHeaders.every((header, index) => header === actualHeaders[index])) {
-        alert('The Excel file does not have the correct headers.');
-        return;
-      }
-  
-      // Remove the header row
-      rows.shift();
-  
-      // Validate and filter data
-      const validatedData = rows.map(row => {
-        const [recepientName, email, country, description, currency, amount] = row;
-        if (!email || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) return null; // Invalid email
-        if (!['nigeria', 'kenya', 'sa', 'uganda'].includes(country.toLowerCase())) return null; // Invalid country
-        if (!Number.isInteger(amount)) return null; // Invalid amount
-        
-        // Create an object for each row
-        return {
-          recepientName,
-          email,
-          country,
-          description,
-          currency,
-          amount
-        };
-      }).filter(Boolean); // Filter out null values (invalid rows)
-  
-      // Save the validated data
-      setData(validatedData);
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
 
-      if(validatedData.length > 0){
-        navigate('/app/summary_payment', { state: validatedData});
-      }else{
-        toast.error('Excel sheet is empty', {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        validateAndProcessData(rows);
+      } catch (error) {
+        if (error.message.includes('ECMA-376 Encrypted file missing /EncryptionInfo')) {
+          alert('The file is encrypted and cannot be processed.');
+        } else {
+          alert('An error occurred while processing the file.');
+          console.error(error);
+        }
       }
-  
-      
     };
-  
+
     reader.readAsArrayBuffer(selectedFile);
+  };
+
+  const validateAndProcessData = (rows) => {
+    const expectedHeaders = ['recepientName', 'email', 'country', 'description', 'currency', 'amount'];
+    const actualHeaders = rows[0];
+    if (!expectedHeaders.every((header, index) => header === actualHeaders[index])) {
+      alert('The Excel file does not have the correct headers.');
+      return;
+    }
+
+    rows.shift(); // Remove the header row
+
+    const validatedData = rows.map(row => {
+      const [recepientName, email, country, description, currency, amount] = row;
+      if (!email || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) return null; // Invalid email
+      if (!['nigeria', 'kenya', 'sa', 'uganda'].includes(country.toLowerCase())) return null; // Invalid country
+      if (!Number.isInteger(amount)) return null; // Invalid amount
+
+      return {
+        recepientName,
+        email,
+        country,
+        description,
+        currency,
+        amount
+      };
+    }).filter(Boolean); // Filter out null values (invalid rows)
+
+    setData(validatedData);
+
+    if (validatedData.length > 0) {
+      navigate('/app/summary_payment', { state: validatedData });
+    } else {
+      toast.error('Excel sheet is empty', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
 
   return (
@@ -122,24 +123,24 @@ function FileUpload() {
       </div>
 
       <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800 w-full lg:w-1/2 lg:mx-auto">
-          <p className="text-gray-600 dark:text-gray-400">
-            When you have many payouts to make.
-          </p>
+        <p className="text-gray-600 dark:text-gray-400">
+          When you have many payouts to make.
+        </p>
 
-          <div className='flex justify-between text-blue-800 dark:text-blue-500 font-extrabold mt-3'>
-            <span>Choose File</span>
-            <a href={require("../assets/excel/PAYMENT_EXCEL_TEMPLATE.xlsx")} download className='hover:text-blue-600 hover:underline'>Download template</a>
-          </div>
+        <div className='flex justify-between text-blue-800 dark:text-blue-500 font-extrabold mt-3'>
+          <span>Choose File</span>
+          <a href={require("../assets/excel/PAYMENT_EXCEL_TEMPLATE.xlsx")} download className='hover:text-blue-600 hover:underline'>Download template</a>
+        </div>
 
         <div className="flex items-center justify-center w-full mt-2" onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}>
           {selectedFile ? (
             <div className="flex justify-center gap-4 mt-5">
-                <div className=''>
-                    <img src={require('../icons/excel.png')} alt="Excel Logo" className="w-32 h-32 mx-auto" />
-                    <div className="text-xs text-center mt-5 overflow-hidden mx-auto">{selectedFile.name}</div>
-                </div>
-              
-              <button type="button" onClick={handleDeleteFile}  className="w-8 h-8 fill-current bg-red-500 text-white cursor-pointer rounded-full">
+              <div>
+                <img src={require('../icons/excel.png')} alt="Excel Logo" className="w-32 h-32 mx-auto" />
+                <div className="text-xs text-center mt-5 overflow-hidden mx-auto">{selectedFile.name}</div>
+              </div>
+
+              <button type="button" onClick={handleDeleteFile} className="w-8 h-8 fill-current bg-red-500 text-white cursor-pointer rounded-full">
                 X
               </button>
             </div>
@@ -157,24 +158,23 @@ function FileUpload() {
           )}
         </div>
 
-        {
-          viewProcessBtn &&
-          <div className='flex justify-end mr-2 mt-2'> 
-            <button 
-            onClick={e => {
-              e.preventDefault();
-              handleFileProcess();
-            }}
-            className='bg-blue-600 hover:bg-blue-500 text-white p-2 text-sm rounded-lg'>
-                Proceed
+        {viewProcessBtn && (
+          <div className='flex justify-end mr-2 mt-2'>
+            <button
+              onClick={e => {
+                e.preventDefault();
+                handleFileProcess();
+              }}
+              className='bg-blue-600 hover:bg-blue-500 text-white p-2 text-sm rounded-lg'>
+              Proceed
             </button>
           </div>
-        }
+        )}
 
-        { !viewProcessBtn && <p className="text-gray-600 dark:text-gray-400 mt-4">We support excel (.xlsx) and (.xls) file format. The file must have fields with title recepient_name, recepient_email, country, description and amount . You can download a template <a href={require("../assets/excel/PAYMENT_EXCEL_TEMPLATE.xlsx")} download className='text-blue-800 hover:text-blue-500 dark:text-blue-500 font-bold hover:underline'>here</a>.</p> }
+        {!viewProcessBtn && <p className="text-gray-600 dark:text-gray-400 mt-4">We support excel (.xlsx) and (.xls) file format. The file must have fields with title recepient_name, recepient_email, country, description and amount. You can download a template <a href={require("../assets/excel/PAYMENT_EXCEL_TEMPLATE.xlsx")} download className='text-blue-800 hover:text-blue-500 dark:text-blue-500 font-bold hover:underline'>here</a>.</p>}
       </div>
     </div>
-  )
+  );
 }
 
-export default FileUpload
+export default FileUpload;
