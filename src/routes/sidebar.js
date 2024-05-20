@@ -22,6 +22,11 @@ const routes = [
     name: 'Payouts'
   },
   {
+    path: '/app/creator_applications',
+    icon: 'FormsIcon',
+    name: 'Creator Applications',
+  },
+  {
     path: '/app/settings',
     icon: 'SettingsIcon',
     name: 'Settings'

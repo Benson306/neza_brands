@@ -231,6 +231,7 @@ function SummaryAndPayment() {
             });
             setTimeout(()=>{
               navigate("/app/payouts");
+              window.location.reload();
             }, 700)
         }else{
           toast.error('Failed. Server Error', {
@@ -284,6 +285,7 @@ function SummaryAndPayment() {
             });
             setTimeout(()=>{
               navigate("/app/payouts");
+              window.location.reload();
             }, 700)
         }else{
           toast.error('Failed. Server Error', {
