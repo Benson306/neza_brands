@@ -192,20 +192,20 @@ function Deposit() {
               !loading && !error && dataTable1.slice().map( (item, i) => (
               <TableRow key={i}>
                 <TableCell>
-                  <span className="text-sm capitalize">{item.currency} {item.amount}</span>
+                  <span className="text-xs capitalize">{item.currency} {item.amount}</span>
                 </TableCell>
                 <TableCell>
                   {
-                    item.status == "charge.success" ? <span className="text-sm bg-green-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
+                    item.status == "charge.success" ? <span className="text-xs bg-green-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
                     :
-                    item.status == "charge.cancelled" ? <span className="text-sm bg-red-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
+                    item.status == "charge.cancelled" ? <span className="text-xs bg-red-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
                     :
-                    <span className="text-sm bg-gray-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
+                    <span className="text-xs bg-gray-600 text-white rounded-md p-1">{item.status.split(".")[1]}</span>
                   }
                   
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm"><b>{item.time} UTC</b> <br/> {item.date}</span>
+                  <span className="text-xs"><b>{item.time} UTC</b> <br/> {item.date}</span>
                 </TableCell>
               </TableRow>
               ) )

@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import ImageLight from '../assets/img/forgot-password-office.jpeg'
 import ImageDark from '../assets/img/forgot-password-office-dark.jpeg'
-import { Label, Input, Button } from '@windmill/react-ui'
+import { Label, Input, Button, WindmillContext } from '@windmill/react-ui'
 
 function ForgotPassword() {
+  const { mode } = useContext(WindmillContext)
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
-      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden">
+        <div className='flex justify-center mb-4'>
+              { mode === 'dark' ? (
+                <img src={require("../assets/img/LogoWhite.png")} width={100} />
+              ) : (
+                <img src={require("../assets/img/LogoBlack.png")} width={100} />
+              )}
+        </div>
+        <div className='bg-white rounded-lg shadow-xl dark:bg-gray-800'>
         <div className="flex flex-col overflow-y-auto md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img
@@ -32,14 +41,16 @@ function ForgotPassword() {
 
               <Label>
                 <span>Email</span>
-                <Input className="mt-1" placeholder="Jane Doe" />
+                <Input className="mt-1" placeholder="user@neza.app" />
               </Label>
-
-              <Button tag={Link} to="/login" block className="mt-4">
+            <div className='flex justify-center w-full'>
+              <button tag={Link} to="/login" block className="w-full text-sm mt-4 bg-green-600 hover:bg-green-500 p-2 rounded-lg text-white">
                 Recover password
-              </Button>
+              </button>
+            </div>
             </div>
           </main>
+        </div>
         </div>
       </div>
     </div>
