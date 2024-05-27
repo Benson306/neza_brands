@@ -8,9 +8,10 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, Button, Label
 } from '@windmill/react-ui';
 import { MailIcon, PasswordIcon } from '../icons';
+import { useNavigate } from 'react-router-dom';
 
 function Settings() {
-  const { email, uid, addEmail } = useContext(AuthContext);
+  const { email, uid, addEmail, logout } = useContext(AuthContext);
   const [currPassword, setCurrPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const [changedEmail, setChangedEmail] = useState(null);
@@ -197,6 +198,13 @@ function Settings() {
 
   }
 
+  const navigate = useNavigate();
+
+  const handleForgotPassword = () => {
+    logout();
+    navigate("/forgot-password");
+  }
+
   return (
     <div>
       <ToastContainer />
@@ -229,7 +237,10 @@ function Settings() {
             </div>
             <div className='dark:text-gray-500 text-xs mt-5 block lg:flex gap-2'>
               <div>Can't remember your current password?</div>
-              <button className='underline text-blue-600 hover:text-blue-500 mt-2 lg:mt-0'>Reset your password</button>
+              <button onClick={e => {
+                e.preventDefault();
+                handleForgotPassword();
+              }} className='underline text-blue-600 hover:text-blue-500 mt-2 lg:mt-0'>Reset your password</button>
             </div>
             <button
             onClick={e => {
