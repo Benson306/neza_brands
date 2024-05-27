@@ -1,14 +1,84 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import ImageLight from '../assets/img/forgot-password-office.jpeg'
 import ImageDark from '../assets/img/forgot-password-office-dark.jpeg'
 import { Label, Input, Button, WindmillContext } from '@windmill/react-ui'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ForgotPassword() {
-  const { mode } = useContext(WindmillContext)
+  const { mode } = useContext(WindmillContext);
+  const [ email, setEmail] = useState(null);
+  const navigate = useNavigate();
+
+  const handleResetPassword = () => {
+    if(email == null){
+      toast.error('Email must be filled', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      return
+    }
+
+    fetch(`${process.env.REACT_APP_API_URL}/reset_brand_password`,{
+      method: 'POST',
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        email
+      })
+    })
+    .then(res => {
+      if(res.ok){
+        toast.success('Success', {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        navigate('/change_password');
+        
+      }else{
+          toast.error('Failed. Server Error', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+      }
+    })
+    .catch(err => {
+      toast.error('Failed. Server Error', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    })
+  }
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+      <ToastContainer />
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden">
         <div className='flex justify-center mb-4'>
               { mode === 'dark' ? (
@@ -41,10 +111,13 @@ function ForgotPassword() {
 
               <Label>
                 <span>Email</span>
-                <Input className="mt-1" placeholder="user@neza.app" />
+                <Input onChange={e => setEmail(e.target.value)} className="mt-1" placeholder="user@neza.app" />
               </Label>
             <div className='flex justify-center w-full'>
-              <button tag={Link} to="/login" block className="w-full text-sm mt-4 bg-green-600 hover:bg-green-500 p-2 rounded-lg text-white">
+              <button onClick={e => {
+                e.preventDefault();
+                handleResetPassword();
+              }} block className="w-full text-sm mt-4 bg-green-600 hover:bg-green-500 p-2 rounded-lg text-white">
                 Recover password
               </button>
             </div>

@@ -102,7 +102,7 @@ function ChangePassword() {
                 <Input onChange={e =>  setConfirmPassword(e.target.value)} className="mt-1" type="password" placeholder="*********" />
               </Label>
 
-              <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
+              <Button class="bg-green-600 p-2 rounded-lg text-sm text-white w-full mt-4 text-center" block
               onClick={() => handleSubmit()}
               >
                 Change Password
@@ -112,7 +112,7 @@ function ChangePassword() {
 
               <p >
                 <Link
-                  className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-sm font-medium text-green-600 dark:text-blue-400 hover:underline"
                   onClick={()=>{
                     logout();
                   }}

@@ -30,6 +30,7 @@ function Settings() {
   const handleEmailChange = () => {
     setSubmitLoading(true);
     if(changedEmail == null || emailPassword == null){
+      setSubmitLoading(false);
       toast.error('All fields must be filled', {
         position: "top-right",
         autoClose: 1000,
