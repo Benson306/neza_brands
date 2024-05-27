@@ -38,18 +38,21 @@ function ForgotPassword() {
     })
     .then(res => {
       if(res.ok){
-        toast.success('Success', {
+        toast.success('Check your email for new password.', {
           position: "top-right",
-          autoClose: 1000,
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
           theme: "colored",
+
         });
-        navigate('/change_password');
-        
+
+        setTimeout(()=>{
+          navigate('/change_password');
+        }, 2500)
       }else{
           toast.error('Failed. Server Error', {
             position: "top-right",
