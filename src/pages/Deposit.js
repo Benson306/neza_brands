@@ -24,7 +24,7 @@ function Deposit() {
 
   const [amount, setAmount] = useState(null);
   const [currency, setCurrency] = useState("ksh");
-  const { uid } = useContext(AuthContext);
+  const { uid, email } = useContext(AuthContext);
   const [submitLoading, setSubmitLoading] = useState(false);
 
   useEffect(()=>{
@@ -65,7 +65,8 @@ function Deposit() {
         },
         body: JSON.stringify({
             amount: Number(amount),
-            brand_id: uid
+            brand_id: uid,
+            brand_email: email
         })
     })
     .then(response =>{

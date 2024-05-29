@@ -4,7 +4,9 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [uid, setUid] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [email, setEmail] = useState(null);
+    const [role, setRole] = useState(null);
     const [firstTimePassword, setFirstTimePassword] = useState(null);
     
     const addUid = (uid) => {
@@ -12,9 +14,19 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('neza_brand_uid', uid);
     }
 
+    const addUserId = (userId) => {
+        setUserId(userId);
+        localStorage.setItem('neza_brand_user_id', userId);
+    }
+
     const addEmail = (email) => {
         setEmail(email);
         localStorage.setItem('neza_brand_email',email);
+    }
+
+    const addRole = (role) => {
+        setRole(role);
+        localStorage.setItem('role',role);
     }
 
     const addFirstTimePassord = (firstTimePassword) => {
@@ -24,11 +36,15 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setEmail(null);
+        setUserId(null);
+        setRole(null);
         setUid(null);
         setFirstTimePassword(null);
 
         localStorage.removeItem('neza_brand_email');
         localStorage.removeItem('neza_brand_uid');
+        localStorage.removeItem('neza_brand_user_id');
+        localStorage.removeItem('role');
         localStorage.removeItem('brandFirstTimePassword');
     }
 
@@ -46,6 +62,31 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const isUserIdSet = async () => {
+        try{
+            let userId = localStorage.getItem('neza_brand_user_id');
+
+            if(userId){
+                setUserId(userId);
+            }
+        }
+        catch(e){
+            console.log('error setting userId');
+        }
+    }
+
+    const isRoleSet = async () => {
+        try{
+            let role = localStorage.getItem('role');
+
+            if(role){
+                setRole(role);
+            }
+        }
+        catch(e){
+            console.log('error setting role');
+        }
+    }
 
     const isUidSet = async () => {
         try{
@@ -74,12 +115,14 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(()=>{
+        isRoleSet();
+        isUserIdSet();
         isUidSet();
         isEmailSet();
     },[])
 
     return (
-        <AuthContext.Provider value={{ uid, email, firstTimePassword, addEmail, addUid, addFirstTimePassord, logout}}>
+        <AuthContext.Provider value={{ uid, userId, role, email, firstTimePassword, addEmail, addRole, addUserId, addUid, addFirstTimePassord, logout}}>
             { children }
         </AuthContext.Provider>
     )

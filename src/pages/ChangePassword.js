@@ -13,7 +13,7 @@ function ChangePassword() {
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const { uid, logout } = useContext(AuthContext)
+  const { userId, email, logout } = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -39,7 +39,8 @@ function ChangePassword() {
         "Content-Type":"application/json"
       },
       body:JSON.stringify({
-        _id: uid,
+        _id: userId,
+        email,
         password
       })
     })
@@ -87,7 +88,7 @@ function ChangePassword() {
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <ToastContainer />
-      <div className="w-1/3 mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800">
+      <div className="w-5/6 lg:w-1/3 mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800">
           
           <main className="flex items-center justify-center p-6 sm:p-12">
             <div className="w-full">

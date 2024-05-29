@@ -11,7 +11,7 @@ import { MailIcon, PasswordIcon } from '../icons';
 import { useNavigate } from 'react-router-dom';
 
 function Settings() {
-  const { email, uid, addEmail, logout } = useContext(AuthContext);
+  const { email, uid, userId, addEmail, logout } = useContext(AuthContext);
   const [currPassword, setCurrPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const [changedEmail, setChangedEmail] = useState(null);
@@ -51,7 +51,7 @@ function Settings() {
         "Content-Type":"application/json"
       },
       body: JSON.stringify({
-        _id: uid,
+        _id: userId,
         emailPassword,
         currentEmail: email,
         changedEmail
@@ -139,7 +139,7 @@ function Settings() {
         "Content-Type":"application/json"
       },
       body: JSON.stringify({
-        _id: uid,
+        _id: userId,
         currPassword,
         newPassword
       })
@@ -156,7 +156,9 @@ function Settings() {
           progress: undefined,
           theme: "colored",
         });
-        window.location.reload();
+        setTimeout(()=>{
+          window.location.reload();
+        },1500)
       }else{
         if(res.status == 401){
           toast.error('Unauthorized', {
@@ -266,7 +268,7 @@ function Settings() {
         <ModalHeader className="text-center">Change Email</ModalHeader>
         <ModalBody>
                 <Label className="mt-4">
-                <span>Email</span>
+                <span>New Email</span>
                 {/* <!-- focus-within sets the color for the icon when input is focused --> */}
                 <div className="relative text-gray-500 focus-within:text-blue-600 dark:focus-within:text-blue-400">
                   <input

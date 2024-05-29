@@ -13,7 +13,7 @@ function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const { addUid, addEmail, addFirstTimePassord } = useContext(AuthContext)
+  const { addUid, addUserId, addRole, addEmail, addFirstTimePassord } = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -57,9 +57,10 @@ function Login() {
           });
 
           response.json().then((res)=>{
-            console.log(res);
             addEmail(res.email);
-            addUid(res._id);
+            addRole(res.role);
+            addUserId(res._id);
+            addUid(res.brand_id);
             addFirstTimePassord(res.firstTimePassword)
 
             if(res.firstTimePassword){

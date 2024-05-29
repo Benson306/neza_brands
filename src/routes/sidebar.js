@@ -27,6 +27,11 @@ const routes = [
     name: 'Creator Applications',
   },
   {
+    path: '/app/users',
+    icon: 'UsersIcon',
+    name: 'Manage Users',
+  },
+  {
     path: '/app/settings',
     icon: 'SettingsIcon',
     name: 'Settings'

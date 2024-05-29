@@ -31,6 +31,7 @@ import { ReactComponent as SettingsIcon } from './settings.svg'
 import { ReactComponent as CountryIcon } from './country.svg'
 import { ReactComponent as HelpIcon } from './help.svg'
 import { ReactComponent as PasswordIcon } from './password.svg'
+import { ReactComponent as UsersIcon } from './peopleicon.svg'
 
 export {
   ButtonsIcon,
@@ -65,5 +66,6 @@ export {
   SettingsIcon,
   CountryIcon,
   HelpIcon,
-  PasswordIcon
+  PasswordIcon,
+  UsersIcon
 }
