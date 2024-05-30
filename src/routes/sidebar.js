@@ -34,7 +34,7 @@ const routes = [
   {
     path: '/app/settings',
     icon: 'SettingsIcon',
-    name: 'Settings'
+    name: 'Account Settings'
   },
   // {
   //   path: '/app/forms',
