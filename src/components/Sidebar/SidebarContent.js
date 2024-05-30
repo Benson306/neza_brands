@@ -1,9 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import routes from '../../routes/sidebar'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import * as Icons from '../../icons'
 import SidebarSubmenu from './SidebarSubmenu'
 import { Button, WindmillContext } from '@windmill/react-ui'
+import { AuthContext } from '../../context/AuthContext'
 
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon]
@@ -12,6 +13,25 @@ function Icon({ icon, ...props }) {
 
 function SidebarContent() {
   const { mode } = useContext(WindmillContext)
+  const { role, uid } = useContext(AuthContext)
+
+  const [brandName, setBrandName] = useState(null);
+
+  useEffect(()=>{
+    fetch(`${process.env.REACT_APP_API_URL}/brand/${uid}`)
+    .then((res)=>{
+      if(res.ok){
+        res.json().then(data =>{
+          setBrandName(data.brandName);
+        })
+      }else{
+        console.log("error fetching brand name");
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  },[])
   return (
     <div className="py-4 text-gray-500 dark:text-gray-400">
       <div className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
@@ -23,11 +43,15 @@ function SidebarContent() {
                 <img src={require("./../../assets/img/LogoBlack.png")} width={100} />
               )}
           </div>
-          <div className='mt-5 text-center'>Brand Dashboard</div>
+          <div className='mt-3 text-center'>Brand Dashboard</div>
+          <div className='mt-1 font-semibold text-sm text-center'>{brandName}</div>
+
         </div>
       </div>
       <ul className="mt-6">
-        {routes.map((route) =>
+        {routes
+        .filter(route => !route.roles || route.roles.includes(role))
+        .map((route) =>
           route.routes ? (
             <SidebarSubmenu route={route} key={route.name} />
           ) : (

@@ -24,7 +24,7 @@ function Deposit() {
 
   const [amount, setAmount] = useState(null);
   const [currency, setCurrency] = useState("ksh");
-  const { uid, email } = useContext(AuthContext);
+  const { uid, email, role } = useContext(AuthContext);
   const [submitLoading, setSubmitLoading] = useState(false);
 
   useEffect(()=>{
@@ -175,9 +175,9 @@ function Deposit() {
         You Have No Deposits
       </div> }
 
-      <div className='flex justify-end mr-5 lg:mr-20 mb-5'>
+      { role == "admin" ? <div className='flex justify-end mr-5 lg:mr-20 mb-5'>
             <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white" onClick={openModal}>Add funds  +</Button>
-        </div>
+        </div> : <div></div> }
 
       <TableContainer className="mb-8">
         <Table>

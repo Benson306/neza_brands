@@ -30,6 +30,7 @@ const routes = [
     path: '/app/users',
     icon: 'UsersIcon',
     name: 'Manage Users',
+    roles: ['admin']
   },
   {
     path: '/app/settings',
