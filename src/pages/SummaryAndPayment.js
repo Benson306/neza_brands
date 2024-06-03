@@ -23,7 +23,7 @@ function SummaryAndPayment() {
   const data = state;
   const [total, setTotal] = useState(0);
 
-  const { uid, email } = useContext(AuthContext);
+  const { uid, userId , email } = useContext(AuthContext);
   const [creditBalance, setCreditBalance] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
   const [ currency, setCurrency ] = useState("ksh");
@@ -76,6 +76,7 @@ function SummaryAndPayment() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          initiatedBy: userId,
           sender_id : uid,
           sender_email : email,
           recepient_name : data[0].recepientName,
@@ -134,10 +135,11 @@ function SummaryAndPayment() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          initiatedBy: userId,
           sender_id : uid,
           sender_email : email,
           data: data,
-          source : "wallet",
+          source : "wallet"
         })
       })
       .then(response => {
