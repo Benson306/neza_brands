@@ -11,6 +11,8 @@ import {
   Pagination
 } from '@windmill/react-ui'
 import Payouts from './Payouts';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function PendingPayoutsTable() {
   const [data, setData] = useState([]);
@@ -62,8 +64,97 @@ function PendingPayoutsTable() {
     setDataTable1(data.slice((pageTable1 - 1) * resultsPerPage, pageTable1 * resultsPerPage))
   }, [pageTable1, data])
 
+  const handleApprovePayout = (id) => {
+    fetch(`${process.env.REACT_APP_API_URL}/approve_payout/`,{
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        payoutId: id,
+        userId: uid
+      })
+    })
+    .then(res => {
+      if(res.ok){
+        toast.success('Payment has been disbursed', {
+          position: "top-right",
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+          setTimeout(()=>{
+            window.location.reload();
+          }, 1000)
+      }else{
+        toast.error('Failed. Server error', {
+          position: "top-right",
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+
+  const handleRejectPayout = (id) => {
+    fetch(`${process.env.REACT_APP_API_URL}/reject_payout`,{
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        payoutId: id,
+        userId: uid
+      })
+    })
+    .then(res => {
+      if(res.ok){
+        toast.success('Payout has been suspended.', {
+          position: "top-right",
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+          setTimeout(()=>{
+            window.location.reload();
+          }, 1000)
+      }else{
+        toast.error('Failed. Server error', {
+          position: "top-right",
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+
   return (
     <div>
+      <ToastContainer />
     <Payouts title="Pending payouts"/>
     <div className='w-full mx-auto'>
       { !loading && data.length > 0 && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
@@ -110,8 +201,18 @@ function PendingPayoutsTable() {
                 </TableCell>
                 { role == 'admin' && <TableCell>
                   <div className='flex gap-4'>
-                    <button className='bg-blue-600 hover:bg-blue-400 rounded p-1 text-xs text-white'>Approve</button>
-                    <button className='border border-red-600 p-1 text-xs rounded text-red-600 hover:bg-red-600 hover:text-white'>Reject</button>
+                    <button
+                      onClick={e => {
+                        e.preventDefault();
+                        handleApprovePayout(item._id);
+                      }}
+                      className='bg-blue-600 hover:bg-blue-400 rounded p-1 text-xs text-white'>Approve</button>
+                    <button 
+                      onClick={e => {
+                        e.preventDefault();
+                        handleRejectPayout(item._id);
+                      }}
+                      className='border border-red-600 p-1 text-xs rounded text-red-600 hover:bg-red-600 hover:text-white'>Reject</button>
                   </div>
                 </TableCell> }
               </TableRow>
