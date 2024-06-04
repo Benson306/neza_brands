@@ -3,10 +3,9 @@ import {
     Modal, ModalHeader, ModalBody, ModalFooter, Button
 } from '@windmill/react-ui'
 import PageTitle from '../components/Typography/PageTitle'
-import PayoutsTable from './PayoutsTable'
 import { useNavigate } from 'react-router-dom'
 
-function Payouts() {
+function Payouts({ title }) {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -23,7 +22,7 @@ function Payouts() {
   return (
 
     <div>
-        <PageTitle>Payouts</PageTitle>
+        <PageTitle>{title}</PageTitle>
 
         <div className='flex justify-end mr-5 lg:mr-20 mb-10'>
             <Button class="bg-blue-600 p-2 rounded-lg text-sm text-white" onClick={openModal}>New Payout  +</Button>
@@ -81,8 +80,6 @@ function Payouts() {
           </div>
         </ModalFooter>
       </Modal>
-
-        <PayoutsTable />
         
     </div>
   )

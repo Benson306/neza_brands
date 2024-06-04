@@ -90,19 +90,37 @@ function SummaryAndPayment() {
       })
       .then(response => {
         if(response.ok){
-          toast.success('Success', {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-            setTimeout(()=>{
-              navigate("/app/payouts");
-            }, 700)
+
+          if(response.status == 200){
+            toast.success('Payment has been disbursed', {
+              position: "top-right",
+              autoClose: 500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
+              setTimeout(()=>{
+                navigate("/app/payouts");
+              }, 700)
+          }else if(response.status == 202){
+            toast.success('Payment has been queued for approval', {
+              position: "top-right",
+              autoClose: 500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
+              setTimeout(()=>{
+                navigate("/app/payouts");
+              }, 700)
+          }
+          
         }else{
           toast.error('Failed. Server Error', {
             position: "top-right",

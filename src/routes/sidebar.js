@@ -17,9 +17,18 @@ const routes = [
     name: 'Deposits'
   },
   {
-    path: '/app/payouts',
+    name: 'Payouts',
     icon: 'WalletIcon',
-    name: 'Payouts'
+    routes: [
+      {
+        path: '/app/pending_payouts',
+        name: 'Pending payouts'
+      },
+      {
+        path: '/app/approved_payouts',
+        name: 'Approved payouts',
+      }
+    ]
   },
   {
     path: '/app/creator_applications',

@@ -10,17 +10,21 @@ import {
   TableContainer,
   Pagination
 } from '@windmill/react-ui'
+import Payouts from './Payouts';
 
-function PayoutsTable() {
+function PendingPayoutsTable() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [total, setTotal] = useState(0);
 
-  const { uid } = useContext(AuthContext);
+  const { role, uid, userId } = useContext(AuthContext);
 
   useEffect(()=>{
-    fetch(`${process.env.REACT_APP_API_URL}/payouts/${uid}`)
+    let adminConnectionString = `${process.env.REACT_APP_API_URL}/all_pending_payouts/${uid}`;
+    let regularConnectionString = `${process.env.REACT_APP_API_URL}/pending_payouts/${userId}`;
+
+    fetch(role == 'admin' ? adminConnectionString : regularConnectionString)
     .then( response => response.json())
     .then(response => {
       setData(response);
@@ -59,6 +63,8 @@ function PayoutsTable() {
   }, [pageTable1, data])
 
   return (
+    <div>
+    <Payouts title="Pending payouts"/>
     <div className='w-full mx-auto'>
       { !loading && data.length > 0 && <div className='capitalize flex my-3 mr-20 text-xs text-gray-600 dark:text-gray-400'>
         Total Payout: <span className='font-semibold ml-2'>{data[0].currency}. {total}</span>
@@ -76,6 +82,7 @@ function PayoutsTable() {
               <TableCell >Country</TableCell>
               <TableCell >Amount</TableCell>
               <TableCell >Date</TableCell>
+              { role == 'admin' && <TableCell>Actions</TableCell>}
             </tr>
           </TableHeader>
           <TableBody>
@@ -101,6 +108,12 @@ function PayoutsTable() {
                 <TableCell>
                   <span className="text-sm capitalize">{item.date}</span>
                 </TableCell>
+                { role == 'admin' && <TableCell>
+                  <div className='flex gap-4'>
+                    <button className='bg-blue-600 hover:bg-blue-400 rounded p-1 text-xs text-white'>Approve</button>
+                    <button className='border border-red-600 p-1 text-xs rounded text-red-600 hover:bg-red-600 hover:text-white'>Reject</button>
+                  </div>
+                </TableCell> }
               </TableRow>
               ) )
             }
@@ -121,10 +134,9 @@ function PayoutsTable() {
           />
         </TableFooter>
       </TableContainer>
-
-    
+    </div>
     </div>
   )
 }
 
-export default PayoutsTable
+export default PendingPayoutsTable
