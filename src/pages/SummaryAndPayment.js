@@ -103,7 +103,7 @@ function SummaryAndPayment() {
               theme: "colored",
               });
               setTimeout(()=>{
-                navigate("/app/payouts");
+                navigate("/app/pending_payouts");
               }, 700)
           }else if(response.status == 202){
             toast.success('Payment has been queued for approval', {
@@ -117,7 +117,7 @@ function SummaryAndPayment() {
               theme: "colored",
               });
               setTimeout(()=>{
-                navigate("/app/payouts");
+                navigate("/app/pending_payouts");
               }, 700)
           }
           
@@ -173,7 +173,7 @@ function SummaryAndPayment() {
             theme: "colored",
             });
             setTimeout(()=>{
-              navigate("/app/payouts");
+              navigate("/app/pending_payouts");
             }, 700)
         }else{
           toast.error('Failed. Server Error', {
@@ -250,7 +250,7 @@ function SummaryAndPayment() {
             theme: "colored",
             });
             setTimeout(()=>{
-              navigate("/app/payouts");
+              navigate("/app/pending_payouts");
               window.location.reload();
             }, 700)
         }else{
@@ -304,7 +304,7 @@ function SummaryAndPayment() {
             theme: "colored",
             });
             setTimeout(()=>{
-              navigate("/app/payouts");
+              navigate("/app/pending_payouts");
               window.location.reload();
             }, 700)
         }else{

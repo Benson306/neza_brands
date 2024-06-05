@@ -8,7 +8,8 @@ import {
   TableRow,
   TableFooter,
   TableContainer,
-  Pagination
+  Pagination,
+  Badge
 } from '@windmill/react-ui'
 import Payouts from './Payouts';
 import { ToastContainer, toast } from 'react-toastify';
@@ -64,7 +65,10 @@ function PendingPayoutsTable() {
     setDataTable1(data.slice((pageTable1 - 1) * resultsPerPage, pageTable1 * resultsPerPage))
   }, [pageTable1, data])
 
+  const [btnLoading , setBtnLoading] = useState(false);
+
   const handleApprovePayout = (id) => {
+    setBtnLoading(true);
     fetch(`${process.env.REACT_APP_API_URL}/approve_payout`,{
       method: 'POST',
       headers: {
@@ -87,11 +91,14 @@ function PendingPayoutsTable() {
           progress: undefined,
           theme: "colored",
           });
+
           setTimeout(()=>{
+            setBtnLoading(false);
             window.location.reload();
           }, 1000)
       }else{
         res.json().then( result => {
+          setBtnLoading(false);
           toast.error(result, {
             position: "top-right",
             autoClose: 500,
@@ -107,11 +114,13 @@ function PendingPayoutsTable() {
       }
     })
     .catch((err)=>{
+      setBtnLoading(false);
       console.log(err);
     })
   }
 
   const handleRejectPayout = (id) => {
+    setBtnLoading(true);
     fetch(`${process.env.REACT_APP_API_URL}/reject_payout`,{
       method: 'POST',
       headers: {
@@ -135,10 +144,12 @@ function PendingPayoutsTable() {
           theme: "colored",
           });
           setTimeout(()=>{
+            setBtnLoading(false);
             window.location.reload();
           }, 1000)
       }else{
         res.json().then( result => {
+          setBtnLoading(false);
           toast.error(result, {
             position: "top-right",
             autoClose: 500,
@@ -153,6 +164,7 @@ function PendingPayoutsTable() {
       }
     })
     .catch((err)=>{
+      setBtnLoading(false);
       console.log(err);
     })
   }
@@ -178,6 +190,7 @@ function PendingPayoutsTable() {
               <TableCell >Country</TableCell>
               <TableCell >Amount</TableCell>
               <TableCell >Date</TableCell>
+              { role == "regular" && <TableCell>Status</TableCell>}
               { role == 'admin' && <TableCell>Actions</TableCell>}
             </tr>
           </TableHeader>
@@ -204,8 +217,21 @@ function PendingPayoutsTable() {
                 <TableCell>
                   <span className="text-sm capitalize">{item.date}</span>
                 </TableCell>
+                {
+                  role == "regular" && <TableCell>
+                    {
+                      item.status == 0 ?
+                          <Badge type={'neutral'}>Pending</Badge>
+                          :
+                      item.status == 1 ?
+                          <Badge type={'success'}>Approved</Badge>
+                          :
+                          <Badge type={'danger'}>Rejected</Badge>
+                    }
+                  </TableCell>
+                }
                 { role == 'admin' && <TableCell>
-                  <div className='flex gap-4'>
+                  { !btnLoading && <div className='flex gap-4'>
                     <button
                       onClick={e => {
                         e.preventDefault();
@@ -218,7 +244,10 @@ function PendingPayoutsTable() {
                         handleRejectPayout(item._id);
                       }}
                       className='border border-red-600 p-1 text-xs rounded text-red-600 hover:bg-red-600 hover:text-white'>Reject</button>
-                  </div>
+                  </div> }
+                  {
+                    btnLoading && <button className='border border-blue-600 text-blue-600 p-1 text-xs rounded'>Loading...</button>
+                  }
                 </TableCell> }
               </TableRow>
               ) )
