@@ -65,14 +65,14 @@ function PendingPayoutsTable() {
   }, [pageTable1, data])
 
   const handleApprovePayout = (id) => {
-    fetch(`${process.env.REACT_APP_API_URL}/approve_payout/`,{
+    fetch(`${process.env.REACT_APP_API_URL}/approve_payout`,{
       method: 'POST',
       headers: {
         'Content-Type':'application/json'
       },
       body: JSON.stringify({
         payoutId: id,
-        userId: uid
+        userId: userId
       })
     })
     .then(res => {
@@ -91,16 +91,19 @@ function PendingPayoutsTable() {
             window.location.reload();
           }, 1000)
       }else{
-        toast.error('Failed. Server error', {
-          position: "top-right",
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        res.json().then( result => {
+          toast.error(result, {
+            position: "top-right",
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        })
+        
       }
     })
     .catch((err)=>{
@@ -116,7 +119,7 @@ function PendingPayoutsTable() {
       },
       body: JSON.stringify({
         payoutId: id,
-        userId: uid
+        userId: userId
       })
     })
     .then(res => {
@@ -135,16 +138,18 @@ function PendingPayoutsTable() {
             window.location.reload();
           }, 1000)
       }else{
-        toast.error('Failed. Server error', {
-          position: "top-right",
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        res.json().then( result => {
+          toast.error(result, {
+            position: "top-right",
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        })
       }
     })
     .catch((err)=>{
