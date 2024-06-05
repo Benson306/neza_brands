@@ -72,7 +72,7 @@ function Dashboard() {
     })
     .catch(err => console.log(err))
 
-    fetch(`${process.env.REACT_APP_API_URL}/payouts/${uid}`)
+    fetch(`${process.env.REACT_APP_API_URL}/all_approved_payouts/${uid}`)
     .then( response => response.json())
     .then(response => {
       setPayouts(response);
@@ -97,7 +97,7 @@ function Dashboard() {
 
       {/* <!-- Cards --> */}
       <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
-        <InfoCard title="Total Payouts" value={`${currency} ${totalPayouts}`}>
+        <InfoCard title="Aprroved payouts" value={`${currency} ${totalPayouts}`}>
           <RoundIcon
             icon={PeopleIcon}
             iconColorClass="text-orange-500 dark:text-orange-100"
