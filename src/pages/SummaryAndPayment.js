@@ -76,6 +76,7 @@ function SummaryAndPayment() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          approvedBy: userId,
           initiatedBy: userId,
           sender_id : uid,
           sender_email : email,
@@ -153,6 +154,7 @@ function SummaryAndPayment() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          approvedBy: userId,
           initiatedBy: userId,
           sender_id : uid,
           sender_email : email,
@@ -226,6 +228,8 @@ function SummaryAndPayment() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          approvedBy: userId,
+          initiatedBy: userId,
           sender_id : uid,
           sender_email : email,
           recepient_name : data[0].recepientName,
@@ -285,6 +289,8 @@ function SummaryAndPayment() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          approvedBy: userId,
+          initiatedBy: userId,
           sender_id : uid,
           sender_email : email,
           data: data,
