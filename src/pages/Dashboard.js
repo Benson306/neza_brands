@@ -29,6 +29,8 @@ import {
   lineLegends,
 } from '../utils/demo/chartsData'
 import { AuthContext } from '../context/AuthContext'
+import TopFivePayouts from './TopFivePayouts'
+import Graphs from './Graphs'
 
 function Dashboard() {
   const [page, setPage] = useState(1)
@@ -91,12 +93,12 @@ function Dashboard() {
 
   return (
     <>
-      <PageTitle>Dashboard</PageTitle>
+      {/* <PageTitle>Dashboard</PageTitle> */}
 
       {/* <CTA /> */}
 
       {/* <!-- Cards --> */}
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3 mt-10">
         <InfoCard title="Aprroved payouts" value={`${currency} ${totalPayouts}`}>
           <RoundIcon
             icon={PeopleIcon}
@@ -191,6 +193,10 @@ function Dashboard() {
           <ChartLegend legends={lineLegends} />
         </ChartCard>
       </div> */}
+
+      <Graphs />
+
+      <TopFivePayouts />
     </>
   )
 }
