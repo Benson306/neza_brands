@@ -6,7 +6,7 @@ import ChartCard from '../components/Chart/ChartCard'
 import { Doughnut, Line } from 'react-chartjs-2'
 import ChartLegend from '../components/Chart/ChartLegend'
 import PageTitle from '../components/Typography/PageTitle'
-import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../icons'
+import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon, WalletIcon } from '../icons'
 import RoundIcon from '../components/RoundIcon'
 import response from '../utils/demo/tableData'
 import {
@@ -36,7 +36,8 @@ function Dashboard() {
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
   const [payouts, setPayouts] = useState([]);
-  const [totalPayouts, setTotalPayouts] = useState(0);
+  const [totalApprovedPayouts, setTotalApprovedPayouts] = useState(0);
+  const [totalPendingPayouts, setTotalPendingPayouts] = useState(0);
 
   // pagination setup
   const resultsPerPage = 10
@@ -74,7 +75,7 @@ function Dashboard() {
     })
     .catch(err => console.log(err))
 
-    fetch(`${process.env.REACT_APP_API_URL}/all_approved_payouts/${uid}`)
+    fetch(`${process.env.REACT_APP_API_URL}/all_payouts/${uid}`)
     .then( response => response.json())
     .then(response => {
       setPayouts(response);
@@ -82,13 +83,16 @@ function Dashboard() {
     .catch(err => {
       console.log(err)
     })
-
-    //setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage))
   }, [])
 
   useEffect(()=>{
-    const calculatedTotal = payouts.reduce((acc, item) => acc + Number(item.amount), 0);
-    setTotalPayouts(calculatedTotal)
+    const calculatedTotal = payouts.filter(item => item.status == 1).reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotalApprovedPayouts(calculatedTotal)
+  }, [payouts])
+
+  useEffect(()=>{
+    const calculatedTotal = payouts.filter(item => item.status == 0).reduce((acc, item) => acc + Number(item.amount), 0);
+    setTotalPendingPayouts(calculatedTotal)
   }, [payouts])
 
   return (
@@ -98,12 +102,21 @@ function Dashboard() {
       {/* <CTA /> */}
 
       {/* <!-- Cards --> */}
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3 mt-10">
-        <InfoCard title="Aprroved payouts" value={`${currency} ${totalPayouts}`}>
+      <div className="grid gap-1 mb-8 md:grid-cols-2 xl:grid-cols-4 mt-10">
+        <InfoCard title="Aprroved payouts" value={`${currency} ${totalApprovedPayouts}`}>
           <RoundIcon
             icon={PeopleIcon}
             iconColorClass="text-orange-500 dark:text-orange-100"
             bgColorClass="bg-orange-100 dark:bg-orange-500"
+            className="mr-4"
+          />
+        </InfoCard>
+
+        <InfoCard title="Pending payouts" value={`${currency} ${totalPendingPayouts}`}>
+          <RoundIcon
+            icon={WalletIcon}
+            iconColorClass="text-purple-500 dark:text-purple-100"
+            bgColorClass="bg-purple-100 dark:bg-purple-500"
             className="mr-4"
           />
         </InfoCard>

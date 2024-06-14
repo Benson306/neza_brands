@@ -21,14 +21,22 @@ function ApprovedPayoutsTable() {
   const { role, uid , userId } = useContext(AuthContext);
 
   useEffect(()=>{
-    let adminConnectionString = `${process.env.REACT_APP_API_URL}/all_approved_payouts/${uid}`;
+    let adminConnectionString = `${process.env.REACT_APP_API_URL}/all_payouts/${uid}`;
     let regularConnectionString = `${process.env.REACT_APP_API_URL}/approved_payouts/${userId}`;
 
     fetch(role == 'admin' ? adminConnectionString : regularConnectionString)
     .then( response => response.json())
     .then(response => {
-      setData(response);
-      setLoading(false);
+      if(role == 'admin'){
+        let newData = response.filter(res => res.status == 1)
+        setTimeout(()=>{
+          setData(newData);
+          setLoading(false);
+        }, 2000)
+      }else{
+        setData(response);
+        setLoading(false);
+      }
     })
     .catch(err => {
       setError(true);
