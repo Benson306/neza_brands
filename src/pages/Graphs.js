@@ -68,27 +68,23 @@ function Graphs() {
       ]
 
   return (
-    <div className="block lg:flex justify-evenly gap-2 mb-2">
-        <div className='mb-2'>
-            { !loading && <ChartCard title="Source of funds">
+    <div className="block lg:flex gap-2 mb-2">
+
+        <div className='mb-2 w-full lg:w-1/2'>
+            <ChartCard title="Total payouts per month">
+                <Bar {...barOptions} />
+                <ChartLegend legends={barLegends} />
+            </ChartCard>
+        </div>
+        <div className='mb-2 w-full lg:w-1/2'>
+            { !loading && <ChartCard title="Source of funds (KES)">
                 <Doughnut {...doughnutOptions} />
                 <ChartLegend legends={doughnutLegends} />
             </ChartCard> }
         </div>
         
-        <div className='mb-2'>
-            <ChartCard title="Lines">
-                <Line {...lineOptions} />
-                <ChartLegend legends={lineLegends} />
-            </ChartCard>
-        </div>
 
-        <div className='mb-2'>
-            <ChartCard title="Bars">
-                <Bar {...barOptions} />
-                <ChartLegend legends={barLegends} />
-            </ChartCard>
-        </div>
+        
       </div>
   )
 }
