@@ -114,7 +114,7 @@ function ForgotPassword() {
 
               <Label>
                 <span>Email</span>
-                <Input type="email" onChange={e => setEmail(e.target.value)} className="mt-1" placeholder="user@neza.app" />
+                <Input type="email" onChange={e => setEmail(e.target.value)} className="mt-1" placeholder="user@neza.money" />
               </Label>
             <div className='flex justify-center w-full'>
               <button onClick={e => {
